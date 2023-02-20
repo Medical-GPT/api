@@ -1,7 +1,6 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from message_model import Message
 from message_controller import get_message_response
 
 app = FastAPI()
@@ -17,14 +16,13 @@ app.add_middleware(
 )
 
 
-@app.websocket("/ws")
+@app.websocket("/session")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-
     while True:
         try:
             message = await websocket.receive_json()
-            response = get_message_response(message)
+            response = await get_message_response(message)
             await websocket.send_json({"message": response})
         except WebSocketDisconnect:
             break

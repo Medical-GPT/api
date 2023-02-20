@@ -1,9 +1,10 @@
-from responses import responses
+from model import predict_response
 
 
-def get_message_response(message):
+async def get_message_response(message):
     [message_text] = message
-    # model.predict(message_text)
-    response = responses.pop(0)
-    responses.append(response)
+
+    response = await predict_response(message_text)
+    # TODO: add empathic rewriting here
+
     return response
