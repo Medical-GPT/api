@@ -33,7 +33,6 @@ clean: ## Cleans up temporary files
 	@echo
 
 run: ## Start the api
-	@echo "==> Cleaning up..."
 	@venv/bin/python src/main.py
 	@echo "    [✓]"
 	@echo
