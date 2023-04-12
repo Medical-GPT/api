@@ -1,9 +1,10 @@
+from .model import Model
 import sys
 from pathlib import Path
 import torch
 
 # Get the parent folder (project) path
-project_folder = Path(__file__).resolve().parent.parent.parent
+project_folder = Path(__file__).resolve().parent.parent.parent.parent
 sys.path.append(str(project_folder))
 
 from chatbot.src.pretraining.model import BigramLanguageModel

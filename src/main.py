@@ -1,7 +1,10 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from message_controller import get_message_response
+
+from models.model_factory import ModelFactory
+
+modelFactory = ModelFactory()
 
 app = FastAPI()
 
@@ -22,7 +25,7 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         try:
             message = await websocket.receive_json()
-            response = await get_message_response(message)
+            response = modelFactory.consume(message)
             await websocket.send_json({"message": response})
         except WebSocketDisconnect:
             break

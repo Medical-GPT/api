@@ -1,0 +1,18 @@
+{
+    "pretrained": {
+        "type": "bigram",
+        "path": "../chatbot/models/pretrained/pretrained"
+    },
+    "gpt2": {
+        "type": "gpt2",
+        "path": "gpt2"
+    },
+    "medical-finetuned": {
+        "type": "gpt2",
+        "path": "../chatbot/models-temp/finetuned/finetuned"
+    },
+    "medical-gpt": {
+        "type": "gpt2",
+        "path": "../chatbot/models/finetuned/finetuned"
+    }
+}

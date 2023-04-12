@@ -2,11 +2,11 @@ from abc import ABC, abstractmethod
 
 
 class Model(ABC):
-    def __init__(self):
-        self.load()
+    def __init__(self, path):
+        self.load(path)
 
     @abstractmethod
-    def load(self):
+    def load(self, path):
         ...
 
     @abstractmethod
