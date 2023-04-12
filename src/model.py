@@ -1,11 +1,14 @@
-from responses import responses
-import asyncio
+from abc import ABC, abstractmethod
 
 
-async def predict_response(message):
-    response = responses.pop(0)
-    responses.append(response)
+class Model(ABC):
+    def __init__(self):
+        self.load()
 
-    await asyncio.sleep(1)
+    @abstractmethod
+    def load(self):
+        ...
 
-    return response
+    @abstractmethod
+    def consume_message(self, message):
+        ...
