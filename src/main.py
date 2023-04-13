@@ -31,5 +31,11 @@ async def websocket_endpoint(websocket: WebSocket):
             break
 
 
+# Get the list of models
+@app.get("/models")
+def get_models():
+    return modelFactory.get_models_json()
+
+
 if __name__ == "__main__":
     uvicorn.run("main:app", port=3000, reload=True)
