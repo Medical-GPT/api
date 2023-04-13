@@ -1,7 +1,7 @@
 {
     "pretrained": {
         "type": "bigram",
-        "path": "../chatbot/models/pretrained/pretrained"
+        "path": "../chatbot/models/pretrained/checkpoints/ch_0_4.7067"
     },
     "gpt2": {
         "type": "gpt2",
@@ -9,10 +9,10 @@
     },
     "medical-finetuned": {
         "type": "gpt2",
-        "path": "../chatbot/models-temp/finetuned/finetuned"
+        "path": "../chatbot/models/finetuned/medical-finetuned"
     },
     "medical-gpt": {
         "type": "gpt2",
-        "path": "../chatbot/models/finetuned/finetuned"
+        "path": "../chatbot/models/finetuned/medical-finetuned"
     }
 }
