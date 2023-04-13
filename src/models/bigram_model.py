@@ -20,4 +20,4 @@ class BigramModel(Model):
     def consume_message(self, message):
         enc_context = torch.tensor([self.encode(message)], dtype=torch.long)
         response = self.model.generate(enc_context, max_new_tokens=200)
-        print(self.decode(response[0].tolist()))
+        return self.decode(response[0].tolist())
