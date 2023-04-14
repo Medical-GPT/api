@@ -1,0 +1,10 @@
+{
+    "empathic-medical": {
+        "models": [
+            "medical-gpt",
+            "empathic-gpt"
+        ],
+        "alias": "Empathic Medical GPT",
+        "interface": true
+    }
+}

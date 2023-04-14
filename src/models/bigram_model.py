@@ -12,7 +12,8 @@ from chatbot.src.pretraining.model import BigramLanguageModel
 
 class BigramModel(Model):
     def __init__(self, path):
-        super().__init__(path)
+        super().__init__()
+        self.load(path)
 
     def load(self, path):
         self.model, self.encode, self.decode = BigramLanguageModel.load(path)

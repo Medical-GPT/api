@@ -4,8 +4,11 @@ import torch
 
 
 class GPTModel(Model):
-    def __init__(self, path):
-        super().__init__(path)
+    def __init__(self, path, query_string="", response_string=""):
+        super().__init__()
+        self.load(path)
+        self.query_string = query_string
+        self.response_string = response_string
 
     def load(self, path):
         self.model = GPT2LMHeadModel.from_pretrained(path)
@@ -14,22 +17,27 @@ class GPTModel(Model):
         self.model.eval()
 
     def consume_message(self, message):
-        adjusted_message = f"Patient: {message}\nDoctor:"
+        adjusted_message = f"{self.query_string} {message}\n{self.response_string}"
         input_ids = self.tokenizer.encode(adjusted_message, return_tensors="pt")
         attention_mask = torch.ones_like(input_ids)
         output = self.model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
-            max_length=100,
+            max_length=200,
             do_sample=True,
             top_k=50,
             temperature=0.6,
         )
 
         generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        trimmed = generated_text.split("Doctor: ")[-1]
+        print(generated_text)
 
-        if len(trimmed) > 300:
-            trimmed = ".".join(trimmed.split(".")[:-1])
+        # Clear the response
+        if self.response_string != "":
+            generated_text = generated_text.split(self.response_string)[-1]
 
-        return trimmed
+        # Trim the query
+        # if len(generated_text) > 300:
+        generated_text = ".".join(generated_text.split(".")[:4])
+
+        return generated_text

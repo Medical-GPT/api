@@ -1,22 +1,26 @@
 {
     "pretrained": {
         "type": "bigram",
-        "path": "../chatbot/models/pretrained/checkpoints/ch_0_4.7067",
-        "alias": "Pretrained model"
+        "path": "../chatbot/models/pretrained/pretrained",
+        "alias": "Pretrained model",
+        "interface": true
     },
     "gpt2": {
         "type": "gpt2",
         "path": "gpt2",
-        "alias": "Clean GPT2"
+        "alias": "Clean GPT2",
+        "interface": true
     },
     "medical-gpt": {
-        "type": "gpt2",
+        "type": "gpt2-medical",
         "path": "../chatbot/models/finetuned/medical-finetuned",
-        "alias": "Medical GPT"
+        "alias": "Medical GPT",
+        "interface": true
     },
     "empathic-gpt": {
-        "type": "gpt2",
-        "path": "../chatbot/models/finetuned/medical-finetuned",
-        "alias": "Empathic Medical GPT"
+        "type": "gpt2-empathic",
+        "path": "../chatbot/models/finetuned/empathic-specialized",
+        "alias": "Empathic GPT",
+        "interface": false
     }
 }
