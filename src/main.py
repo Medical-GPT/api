@@ -1,10 +1,18 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-
+import os
 from models.model_factory import ModelFactory
+from models.mock_model_factory import MockModelFactory
 
-modelFactory = ModelFactory()
+USE_MOCK_MODEL_FACTORY = (
+    os.environ.get("USE_MOCK_MODEL_FACTORY", "false").lower() == "true"
+)
+
+if USE_MOCK_MODEL_FACTORY:
+    model_factory = MockModelFactory()
+else:
+    model_factory = ModelFactory()
 
 app = FastAPI()
 
@@ -25,7 +33,7 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         try:
             message = await websocket.receive_json()
-            response = modelFactory.consume(message)
+            response = model_factory.consume(message)
             await websocket.send_json({"message": response})
         except WebSocketDisconnect:
             break
@@ -34,7 +42,7 @@ async def websocket_endpoint(websocket: WebSocket):
 # Get the list of models
 @app.get("/models")
 def get_models():
-    return modelFactory.get_models_json()
+    return model_factory.get_models_json()
 
 
 if __name__ == "__main__":

@@ -37,6 +37,12 @@ run: ## Start the api
 	@echo "    [✓]"
 	@echo
 
+test: ## Run unit tests
+	@echo "==> Running unit tests..."
+	@USE_MOCK_MODEL_FACTORY=true venv/bin/pytest src/tests
+	@echo "    [✓]"
+	@echo
+
 .PHONY: install uninstall clean
 help: ## Shows available targets
 	@fgrep -h "## " $(MAKEFILE_LIST) | fgrep -v fgrep | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-13s\033[0m %s\n", $$1, $$2}'

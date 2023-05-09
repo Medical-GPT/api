@@ -1,6 +1,7 @@
 from .model import Model
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
+import re
 
 
 class GPTModel(Model):
@@ -16,6 +17,50 @@ class GPTModel(Model):
         self.tokenizer.add_special_tokens({"pad_token": "[PAD]"})
         self.model.eval()
 
+    def get_sentances(self, text):
+        splitted = re.split("(\. |\? )", text)
+
+        ret = []
+
+        for idx in range(0, len(splitted), 2):
+            if idx == len(splitted) - 1:
+                ret.append(splitted[idx])
+                break
+            ret.append(splitted[idx] + splitted[idx + 1][:-1])
+        return ret
+
+    def is_sentances_same(self, sentance1, sentance2, min_repeating_characters=15):
+        for chunk_start in range(
+            0,
+            len(sentance2),
+            min_repeating_characters,
+        ):
+            chunk = sentance2[chunk_start : chunk_start + min_repeating_characters]
+            if chunk in sentance1:
+                return True
+        return False
+
+    def trim_repeating_sentances(self, text, min_repeating_characters=15):
+        sentances = self.get_sentances(text)
+        ret = []
+        for idx, sentance in enumerate(sentances):
+            for prev_sentance in sentances[:idx]:
+                if self.is_sentances_same(
+                    sentance, prev_sentance, min_repeating_characters
+                ):
+                    break
+            else:
+                ret.append(sentance)
+                continue
+            break
+        return " ".join(ret)
+
+    def clear_message(self, message):
+        # Clear the response
+        if self.response_string == "":
+            return message
+        return message.split(f"{self.response_string} ")[-1]
+
     def consume_message(self, message):
         adjusted_message = f"{self.query_string} {message}\n{self.response_string}"
         input_ids = self.tokenizer.encode(adjusted_message, return_tensors="pt")
@@ -30,14 +75,15 @@ class GPTModel(Model):
         )
 
         generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
-        print(generated_text)
 
+        print(f"RAW: {generated_text}")
+        print()
         # Clear the response
-        if self.response_string != "":
-            generated_text = generated_text.split(self.response_string)[-1]
+        generated_text = self.clear_message(generated_text)
 
-        # Trim the query
-        # if len(generated_text) > 300:
-        generated_text = ".".join(generated_text.split(".")[:4])
+        # Remove repeating sentences
+        generated_text = self.trim_repeating_sentances(generated_text)
 
+        print(f"CLEAN: {generated_text}")
+        print()
         return generated_text
