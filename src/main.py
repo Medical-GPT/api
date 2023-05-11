@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 from models.model_factory import ModelFactory
-from models.mock_model_factory import MockModelFactory
+from tests.mocks.model_factory import MockModelFactory
 
 USE_MOCK_MODEL_FACTORY = (
     os.environ.get("USE_MOCK_MODEL_FACTORY", "false").lower() == "true"

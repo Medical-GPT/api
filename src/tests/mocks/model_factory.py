@@ -1,4 +1,4 @@
-from .model_factory import ModelFactory
+from models.model_factory import ModelFactory
 
 
 class MockModelFactory(ModelFactory):
