@@ -76,14 +76,12 @@ class GPTModel(Model):
 
         generated_text = self.tokenizer.decode(output[0], skip_special_tokens=True)
 
-        print(f"RAW: {generated_text}")
-        print()
         # Clear the response
         generated_text = self.clear_message(generated_text)
 
         # Remove repeating sentences
         generated_text = self.trim_repeating_sentances(generated_text)
 
-        print(f"CLEAN: {generated_text}")
+        print(f"Response: {generated_text}")
         print()
         return generated_text
